@@ -1,0 +1,15 @@
+# Build output
+dist
+node_modules
+
+# Lockfile (managed by npm)
+package-lock.json
+
+# Auto-generated files
+convex/_generated
+src/router.ts
+
+# Tooling internals
+.agents
+.claude
+skills-lock.json

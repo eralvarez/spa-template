@@ -16,7 +16,7 @@ npm run preview         # serve the production bundle through Vite
 npx tsc -b              # type-check without running the Vite build
 ```
 
-There is currently no test framework, `test` script, or test suite, so there is no command for running all tests or a single test. There is also no formatter script. Use `npm run lint` and `npm run build` for the repository's configured validation.
+There is currently no test framework, `test` script, or test suite, so there is no command for running all tests or a single test. Prettier is configured via `.prettierrc.json` with a matching `.prettierignore`; use `npm run format` to write and `npm run format:check` to verify. Use `npm run lint`, `npm run format:check`, and `npm run build` for the repository's configured validation.
 
 ## Architecture
 
@@ -36,3 +36,43 @@ There is currently no test framework, `test` script, or test suite, so there is 
 ## Code checks
 
 Oxlint is configured in `.oxlintrc.json` with the React, TypeScript, and Oxc plugins. It enforces React Hooks rules and warns when a module exports non-components in a way that can interfere with React Fast Refresh. TypeScript additionally rejects unused locals/parameters and switch fallthroughs.
+
+## Conventions
+
+### Imports
+
+Use direct paths from `src/` and `convex/`; never `../` or `@/`. The `paths` block in `tsconfig.app.json` (`*` → `./src/*`, `convex/*` → `./convex/*`) and Vite's native `resolve.tsconfigPaths: true` in `vite.config.ts` resolve them. Same-folder `./` imports are fine; bare npm specifiers continue to resolve from `node_modules` via the catch-all falling through.
+
+```ts
+import { useAuthBounce } from 'hooks/useAuthBounce';
+import { FormInput } from 'components/form/FormInput';
+import { signupSchema } from 'validations/signup';
+import { api } from 'convex/_generated/api';
+import { type Path, useNavigate } from 'router';
+```
+
+### Forms
+
+Forms are built from the shared components in `src/components/`:
+
+- `components/form/FormInput` — labelled `<input>` wired to react-hook-form's `register('field')` (passed via the `registration` prop) with an `error?: string` prop for the field-level message.
+- `components/form/FormError` — `<p role="alert">` for non-field errors (e.g. server rejections); renders `null` when `message` is missing.
+- `components/Button` — `<button>` with `variant: 'solid' | 'outlined' | 'text'` (default `solid`) and a default `type="button"`, so submit buttons must opt in with `type="submit"`.
+
+Validation is `react-hook-form` + `yup` via `@hookform/resolvers/yup`. Each form's schema lives in `src/validations/<name>.ts` and exports both the schema and `type XValues = yup.InferType<typeof schema>`. Wire the resolver with `useForm<MyValues>({ resolver: yupResolver(schema), defaultValues })`, pass `registration={register('field')}` and `error={errors.field?.message}` to each `<FormInput>`, render non-field errors with `<FormError message={...} />`, and submit with `<Button type="submit" variant="solid" disabled={isSubmitting}>…</Button>`.
+
+Guest-only pages (signup, signin, password reset, …) call `useAuthBounce()` from `hooks/useAuthBounce` at the top of the component to redirect already-signed-in visitors away (default destination `'/'`; pass any `Path` to land elsewhere).
+
+<!-- convex-ai-start -->
+
+This project uses [Convex](https://convex.dev) as its backend.
+
+When working on Convex code, **always read
+`convex/_generated/ai/guidelines.md` first** for important guidelines on
+how to correctly use Convex APIs and patterns. The file contains rules that
+override what you may have learned about Convex from training data.
+
+Convex agent skills for common tasks can be installed by running
+`npx convex ai-files install`.
+
+<!-- convex-ai-end -->

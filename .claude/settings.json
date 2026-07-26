@@ -1,5 +1,7 @@
 {
   "enabledPlugins": {
-    "convex@claude-plugins-official": true
+    "convex@claude-plugins-official": true,
+    "ponytail@ponytail": true,
+    "code-simplifier@claude-plugins-official": true
   }
 }
