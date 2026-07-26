@@ -40,8 +40,9 @@ export default function AppLayoutRoute() {
   const setLanguage = useMutation(api.users.setLanguage);
 
   // Resolve the current language from the user record (default US / English).
-  const [currentLanguage, setCurrentLanguage] =
-    useState<AppLayoutLanguage>('en');
+  const [currentLanguage, setCurrentLanguage] = useState<AppLayoutLanguage>(
+    (localStorage.getItem('i18nextLng') as AppLayoutLanguage) ?? 'en',
+  );
   useEffect(() => {
     if (me.status === 'success') {
       const fromDoc = me.data?.language;

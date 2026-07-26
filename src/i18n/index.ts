@@ -13,7 +13,7 @@ i18n
     // localStorage by the detector below. We intentionally skip navigator/htmlTag
     // detection so a Spanish-browser visitor with no preference doesn't briefly
     // see Spanish before the user doc resolves and re-syncs to English.
-    lng: 'en',
+    // lng: 'en',
     fallbackLng: 'en',
     supportedLngs: ['en', 'es'],
     interpolation: { escapeValue: false },
