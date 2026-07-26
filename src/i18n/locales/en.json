@@ -4,6 +4,23 @@
     "message": "Page not found.",
     "cta": "Go to home"
   },
+  "login": {
+    "title": "Sign in",
+    "fields": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "errors": {
+      "signInFailed": "Sign in failed",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email",
+      "passwordRequired": "Password is required"
+    }
+  },
   "signup": {
     "title": "Create your account",
     "fields": {
@@ -13,6 +30,8 @@
     },
     "submit": "Sign up",
     "submitting": "Creating account…",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
     "errors": {
       "signUpFailed": "Sign up failed",
       "emailRequired": "Email is required",

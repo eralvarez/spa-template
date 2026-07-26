@@ -4,6 +4,23 @@
     "message": "Página no encontrada.",
     "cta": "Ir al inicio"
   },
+  "login": {
+    "title": "Iniciar sesión",
+    "fields": {
+      "email": "Correo electrónico",
+      "password": "Contraseña"
+    },
+    "submit": "Iniciar sesión",
+    "submitting": "Iniciando sesión…",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUp": "Regístrate",
+    "errors": {
+      "signInFailed": "Error al iniciar sesión",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "emailInvalid": "Ingresa un correo electrónico válido",
+      "passwordRequired": "La contraseña es obligatoria"
+    }
+  },
   "signup": {
     "title": "Crea tu cuenta",
     "fields": {
@@ -13,6 +30,8 @@
     },
     "submit": "Registrarse",
     "submitting": "Creando cuenta…",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar sesión",
     "errors": {
       "signUpFailed": "Error al registrarse",
       "emailRequired": "El correo electrónico es obligatorio",
