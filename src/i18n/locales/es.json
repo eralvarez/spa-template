@@ -39,5 +39,25 @@
       "passwordRequired": "La contraseña es obligatoria",
       "passwordTooShort": "Al menos 8 caracteres"
     }
+  },
+  "app": {
+    "title": "App",
+    "nav": {
+      "dashboard": "Panel",
+      "team": "Equipo",
+      "projects": "Proyectos",
+      "calendar": "Calendario",
+      "reports": "Informes"
+    },
+    "userNav": {
+      "profile": "Tu perfil",
+      "settings": "Configuración",
+      "signOut": "Cerrar sesión"
+    },
+    "brand": "App",
+    "userFallback": {
+      "name": "Usuario",
+      "email": "usuario@ejemplo.com"
+    }
   }
 }

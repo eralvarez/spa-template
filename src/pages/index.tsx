@@ -5,8 +5,6 @@ import { useQueryState } from 'hooks/useQueryState';
 export default function Home() {
   const tasksResponse = useQueryState(api.tasks.get);
 
-  console.log('tasksResponse', tasksResponse);
-
   return (
     <div>
       <h1>Home</h1>
@@ -20,9 +18,9 @@ export default function Home() {
         <Link to="/signup" className="text-blue-600 hover:underline">
           Sign up
         </Link>
-        {/* <Link to="/app" className="text-blue-600 hover:underline">
-          Login
-        </Link> */}
+        <Link to="/app" className="text-blue-600 hover:underline">
+          App
+        </Link>
       </div>
     </div>
   );

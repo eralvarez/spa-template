@@ -39,5 +39,25 @@
       "passwordRequired": "Password is required",
       "passwordTooShort": "At least 8 characters"
     }
+  },
+  "app": {
+    "title": "App",
+    "nav": {
+      "dashboard": "Dashboard",
+      "team": "Team",
+      "projects": "Projects",
+      "calendar": "Calendar",
+      "reports": "Reports"
+    },
+    "userNav": {
+      "profile": "Your profile",
+      "settings": "Settings",
+      "signOut": "Sign out"
+    },
+    "brand": "App",
+    "userFallback": {
+      "name": "User",
+      "email": "user@example.com"
+    }
   }
 }

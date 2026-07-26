@@ -16,6 +16,8 @@
     "@auth/core": "^0.41.1",
     "@convex-dev/auth": "^0.0.94",
     "@generouted/react-router": "^1.20.2",
+    "@headlessui/react": "^2.2.10",
+    "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^5.5.7",
     "@tailwindcss/vite": "^4.3.3",
     "convex": "^1.42.3",
