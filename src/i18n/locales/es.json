@@ -42,6 +42,7 @@
   },
   "app": {
     "title": "App",
+    "loading": "Cargando…",
     "nav": {
       "dashboard": "Panel",
       "team": "Equipo",
@@ -58,6 +59,25 @@
     "userFallback": {
       "name": "Usuario",
       "email": "usuario@ejemplo.com"
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "fields": {
+      "name": "Nombre",
+      "photo": "Foto de perfil"
+    },
+    "submit": "Guardar",
+    "submitting": "Guardando…",
+    "currentPhoto": "Foto actual",
+    "newPhoto": "Nueva foto",
+    "noPhoto": "Sin foto",
+    "errors": {
+      "nameRequired": "El nombre es obligatorio",
+      "saveFailed": "No se pudo guardar el perfil",
+      "uploadFailed": "No se pudo subir la foto",
+      "invalidType": "Elige un archivo de imagen",
+      "tooLarge": "La imagen debe pesar menos de 5 MB"
     }
   }
 }

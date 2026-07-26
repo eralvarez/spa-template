@@ -5,7 +5,7 @@ import './i18n';
 import { ConvexReactClient } from 'convex/react';
 import { ConvexAuthProvider } from '@convex-dev/auth/react';
 
-import { Routes } from '@generouted/react-router';
+import { Routes } from '@generouted/react-router/lazy';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 

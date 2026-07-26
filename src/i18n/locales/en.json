@@ -42,6 +42,7 @@
   },
   "app": {
     "title": "App",
+    "loading": "Loading…",
     "nav": {
       "dashboard": "Dashboard",
       "team": "Team",
@@ -58,6 +59,25 @@
     "userFallback": {
       "name": "User",
       "email": "user@example.com"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "fields": {
+      "name": "Name",
+      "photo": "Profile photo"
+    },
+    "submit": "Save",
+    "submitting": "Saving…",
+    "currentPhoto": "Current photo",
+    "newPhoto": "New photo",
+    "noPhoto": "No photo",
+    "errors": {
+      "nameRequired": "Name is required",
+      "saveFailed": "Could not save profile",
+      "uploadFailed": "Could not upload photo",
+      "invalidType": "Please choose an image file",
+      "tooLarge": "Image must be under 5 MB"
     }
   }
 }

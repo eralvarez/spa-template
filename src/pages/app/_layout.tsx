@@ -2,12 +2,14 @@ import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuthActions } from '@convex-dev/auth/react';
 import { useLocation } from 'react-router';
+import { api } from 'convex/_generated/api';
 import {
   AppLayout,
   type AppLayoutNavigationItem,
   type AppLayoutUserNavItem,
 } from 'components/AppLayout';
 import { AuthGuard } from 'components/AuthGuard';
+import { useQueryState } from 'hooks/useQueryState';
 
 const TITLE_BY_PATH: Record<string, string> = {
   '/app/dashboard': 'app.nav.dashboard',
@@ -15,12 +17,14 @@ const TITLE_BY_PATH: Record<string, string> = {
   '/app/projects': 'app.nav.projects',
   '/app/calendar': 'app.nav.calendar',
   '/app/reports': 'app.nav.reports',
+  '/app/profile': 'profile.title',
 };
 
 export default function AppLayoutRoute({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
   const location = useLocation();
   const { signOut } = useAuthActions();
+  const me = useQueryState(api.users.getMe);
 
   const navigation: AppLayoutNavigationItem[] = [
     { name: t('app.nav.dashboard'), href: '/app/dashboard' },
@@ -37,10 +41,18 @@ export default function AppLayoutRoute({ children }: { children: ReactNode }) {
   ];
 
   const user = {
-    name: t('app.userFallback.name'),
-    email: t('app.userFallback.email'),
+    name:
+      me.status === 'success'
+        ? ((me.data?.name as string | undefined) ?? t('app.userFallback.name'))
+        : t('app.userFallback.name'),
+    email:
+      me.status === 'success'
+        ? ((me.data?.email as string | undefined) ?? '')
+        : '',
     imageUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      me.status === 'success'
+        ? ((me.data?.image as string | undefined) ?? undefined)
+        : undefined,
   };
 
   const titleKey = TITLE_BY_PATH[location.pathname] ?? 'app.title';

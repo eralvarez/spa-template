@@ -10,7 +10,7 @@ import {
 } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Link, type Path } from 'router';
-import { useLocation } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 
 export type AppLayoutNavigationItem = {
   name: string;
@@ -50,7 +50,6 @@ export function AppLayout({
   title,
   logoUrl,
   logoAlt,
-  children,
 }: AppLayoutProps) {
   const location = useLocation();
   const navWithCurrent = navigation.map((item) => ({
@@ -255,7 +254,7 @@ export function AppLayout({
       </header>
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          {children}
+          <Outlet />
         </div>
       </main>
     </div>
