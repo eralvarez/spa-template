@@ -1,0 +1,24 @@
+{
+  "notFound": {
+    "title": "404",
+    "message": "Page not found.",
+    "cta": "Go to home"
+  },
+  "signup": {
+    "title": "Create your account",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password"
+    },
+    "submit": "Sign up",
+    "submitting": "Creating account…",
+    "errors": {
+      "signUpFailed": "Sign up failed",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "At least 8 characters"
+    }
+  }
+}

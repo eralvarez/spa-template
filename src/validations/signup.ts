@@ -1,15 +1,17 @@
 import * as yup from 'yup';
+import type { TFunction } from 'i18next';
 
-export const signupSchema = yup.object({
-  name: yup.string().optional(),
-  email: yup
-    .string()
-    .required('Email is required')
-    .email('Enter a valid email'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(8, 'At least 8 characters'),
-});
+export const createSignupSchema = (t: TFunction) =>
+  yup.object({
+    name: yup.string().optional(),
+    email: yup
+      .string()
+      .required(t('signup.errors.emailRequired'))
+      .email(t('signup.errors.emailInvalid')),
+    password: yup
+      .string()
+      .required(t('signup.errors.passwordRequired'))
+      .min(8, t('signup.errors.passwordTooShort')),
+  });
 
-export type SignupValues = yup.InferType<typeof signupSchema>;
+export type SignupValues = yup.InferType<ReturnType<typeof createSignupSchema>>;

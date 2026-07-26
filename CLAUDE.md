@@ -63,6 +63,68 @@ Validation is `react-hook-form` + `yup` via `@hookform/resolvers/yup`. Each form
 
 Guest-only pages (signup, signin, password reset, …) call `useAuthBounce()` from `hooks/useAuthBounce` at the top of the component to redirect already-signed-in visitors away (default destination `'/'`; pass any `Path` to land elsewhere).
 
+### Data fetching
+
+Use `useQueryState` from `hooks/useQueryState` instead of `useQuery` from `convex/react`. Its return is a discriminated union (`{ status: 'loading', data: undefined }` | `{ status: 'success', data: T }` | `{ status: 'error', data: undefined, error: Error }`), so every call site must handle all three branches — the `data: undefined` in loading/error makes "data is `T | undefined`" impossible to write, and TypeScript's narrowing on `status` gives a non-undefined `result.data` in the success branch.
+
+```ts
+import { useQueryState } from 'hooks/useQueryState';
+import { api } from 'convex/_generated/api';
+
+const tasks = useQueryState(api.tasks.get);
+
+if (tasks.status === 'loading') return <p>Loading…</p>;
+if (tasks.status === 'error') return <FormError message={tasks.error.message} />;
+return <List items={tasks.data} />;
+```
+
+When more than one query is in flight, prefer a single exhaustive `switch (result.status)` over chained `if`s so adding `'error'` (or any future state) is a compile error at every call site.
+
+### Backend auth
+
+All Convex queries and mutations must require an authenticated user session by default — never trust a client-supplied identity. Use `getAuthUserId(ctx)` from `@convex-dev/auth/server` at the top of each handler and throw when it returns `null`. Only skip the auth check when explicitly told the route is public.
+
+```ts
+import { getAuthUserId } from '@convex-dev/auth/server';
+import { query } from './_generated/server';
+
+export const get = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error('Not authenticated');
+    // ...
+  },
+});
+```
+
+If several handlers need the same check, lift it into a shared `requireUserId(ctx)` helper (e.g. in `convex/auth.ts` next to the existing auth setup) and call that — don't duplicate the null-check boilerplate.
+
+### Internationalization
+
+The app ships in **English and Spanish** — both are required for any user-facing string. Configuration lives in `src/i18n/index.ts` (i18next + browser language detector, `fallbackLng: 'en'`, `supportedLngs: ['en', 'es']`); translations live in `src/i18n/locales/en.json` and `src/i18n/locales/es.json`. Both files share the same nested key shape — adding a key requires adding it to both files in the same edit. Pull strings with `const { t } = useTranslation()` and call `t('signup.title')`, `t('signup.errors.emailRequired')`, etc. Default to English when the language isn't otherwise detectable.
+
+Yup validation messages are also translated. Schemas are built via a factory that takes `t` and returns a yup schema, so the current language is captured at the moment `useForm` runs:
+
+```ts
+// src/validations/signup.ts
+import * as yup from 'yup';
+import type { TFunction } from 'i18next';
+
+export const createSignupSchema = (t: TFunction) =>
+  yup.object({
+    email: yup
+      .string()
+      .required(t('signup.errors.emailRequired'))
+      .email(t('signup.errors.emailInvalid')),
+    // ...
+  });
+
+export type SignupValues = yup.InferType<ReturnType<typeof createSignupSchema>>;
+```
+
+When introducing a new locale, add it to `supportedLngs` in `src/i18n/index.ts` and ship a matching `src/i18n/locales/<code>.json` — don't ship a locale with keys missing from the others.
+
 <!-- convex-ai-start -->
 
 This project uses [Convex](https://convex.dev) as its backend.

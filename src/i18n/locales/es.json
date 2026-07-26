@@ -1,0 +1,24 @@
+{
+  "notFound": {
+    "title": "404",
+    "message": "Página no encontrada.",
+    "cta": "Ir al inicio"
+  },
+  "signup": {
+    "title": "Crea tu cuenta",
+    "fields": {
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "password": "Contraseña"
+    },
+    "submit": "Registrarse",
+    "submitting": "Creando cuenta…",
+    "errors": {
+      "signUpFailed": "Error al registrarse",
+      "emailRequired": "El correo electrónico es obligatorio",
+      "emailInvalid": "Ingresa un correo electrónico válido",
+      "passwordRequired": "La contraseña es obligatoria",
+      "passwordTooShort": "Al menos 8 caracteres"
+    }
+  }
+}
