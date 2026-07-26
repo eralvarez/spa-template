@@ -14,7 +14,6 @@ import { createProfileSchema, type ProfileValues } from 'validations/profile';
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export default function Profile() {
-  console.log("Profile page rendered");
   const { t } = useTranslation();
   const me = useQueryState(api.users.getMe);
   const generateUploadUrl = useMutation(api.users.generateUploadUrl);

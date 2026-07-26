@@ -8,7 +8,12 @@ import {
   MenuItem,
   MenuItems,
 } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import {
+  Bars3Icon,
+  BellIcon,
+  CheckIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { Link, type Path } from 'router';
 import { Outlet, useLocation } from 'react-router';
 
@@ -29,6 +34,15 @@ export type AppLayoutUser = {
   imageUrl?: string;
 };
 
+export type AppLayoutLanguage = 'en' | 'es';
+
+export type AppLayoutLanguageSwitcher = {
+  current: AppLayoutLanguage;
+  onChange: (language: AppLayoutLanguage) => void;
+  ariaLabel: string;
+  options: { en: string; es: string };
+};
+
 type AppLayoutProps = {
   navigation: AppLayoutNavigationItem[];
   userNavigation: AppLayoutUserNavItem[];
@@ -36,7 +50,8 @@ type AppLayoutProps = {
   title: string;
   logoUrl?: string;
   logoAlt?: string;
-  children: ReactNode;
+  languageSwitcher?: AppLayoutLanguageSwitcher;
+  children?: ReactNode;
 };
 
 function classNames(...classes: (string | false | null | undefined)[]): string {
@@ -50,6 +65,7 @@ export function AppLayout({
   title,
   logoUrl,
   logoAlt,
+  languageSwitcher,
 }: AppLayoutProps) {
   const location = useLocation();
   const navWithCurrent = navigation.map((item) => ({
@@ -100,6 +116,67 @@ export function AppLayout({
                   <span className="sr-only">View notifications</span>
                   <BellIcon aria-hidden="true" className="size-6" />
                 </button>
+
+                {languageSwitcher ? (
+                  <Menu as="div" className="relative ml-3">
+                    <MenuButton className="relative flex items-center rounded-md px-2 py-1 text-gray-300 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                      <span className="sr-only">
+                        {languageSwitcher.ariaLabel}
+                      </span>
+                      <span aria-hidden className="text-lg leading-none">
+                        {languageSwitcher.current === 'en' ? '🇺🇸' : '🇪🇸'}
+                      </span>
+                    </MenuButton>
+                    <MenuItems
+                      transition
+                      className="absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-white py-1 shadow-lg outline-1 outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                    >
+                      {(
+                        [
+                          {
+                            code: 'en',
+                            flag: '🇺🇸',
+                            label: languageSwitcher.options.en,
+                          },
+                          {
+                            code: 'es',
+                            flag: '🇪🇸',
+                            label: languageSwitcher.options.es,
+                          },
+                        ] as const
+                      ).map((item) => {
+                        const isCurrent =
+                          languageSwitcher.current === item.code;
+                        return (
+                          <MenuItem key={item.code}>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                languageSwitcher.onChange(item.code)
+                              }
+                              aria-current={isCurrent ? 'true' : undefined}
+                              className="flex w-full items-center gap-2 px-4 py-2 text-left text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                            >
+                              <span
+                                aria-hidden
+                                className="text-base leading-none"
+                              >
+                                {item.flag}
+                              </span>
+                              <span className="flex-1">{item.label}</span>
+                              {isCurrent ? (
+                                <CheckIcon
+                                  aria-hidden="true"
+                                  className="size-4 text-indigo-600"
+                                />
+                              ) : null}
+                            </button>
+                          </MenuItem>
+                        );
+                      })}
+                    </MenuItems>
+                  </Menu>
+                ) : null}
 
                 <Menu as="div" className="relative ml-3">
                   <MenuButton className="relative flex max-w-xs items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">

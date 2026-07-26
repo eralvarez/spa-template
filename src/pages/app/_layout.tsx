@@ -1,10 +1,13 @@
-import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useMutation } from 'convex/react';
 import { useAuthActions } from '@convex-dev/auth/react';
 import { useLocation } from 'react-router';
 import { api } from 'convex/_generated/api';
 import {
   AppLayout,
+  type AppLayoutLanguage,
+  type AppLayoutLanguageSwitcher,
   type AppLayoutNavigationItem,
   type AppLayoutUserNavItem,
 } from 'components/AppLayout';
@@ -20,11 +23,55 @@ const TITLE_BY_PATH: Record<string, string> = {
   '/app/profile': 'profile.title',
 };
 
-export default function AppLayoutRoute({ children }: { children: ReactNode }) {
-  const { t } = useTranslation();
+const SUPPORTED_LANGUAGES: ReadonlyArray<AppLayoutLanguage> = ['en', 'es'];
+
+function isSupportedLanguage(value: unknown): value is AppLayoutLanguage {
+  return (
+    typeof value === 'string' &&
+    (SUPPORTED_LANGUAGES as ReadonlyArray<string>).includes(value)
+  );
+}
+
+export default function AppLayoutRoute() {
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const { signOut } = useAuthActions();
   const me = useQueryState(api.users.getMe);
+  const setLanguage = useMutation(api.users.setLanguage);
+
+  // Resolve the current language from the user record (default US / English).
+  const [currentLanguage, setCurrentLanguage] =
+    useState<AppLayoutLanguage>('en');
+  useEffect(() => {
+    if (me.status === 'success') {
+      const fromDoc = me.data?.language;
+      if (isSupportedLanguage(fromDoc) && fromDoc !== currentLanguage) {
+        setCurrentLanguage(fromDoc);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me.status, me.status === 'success' ? me.data?.language : undefined]);
+
+  // Sync i18n whenever the resolved current language changes (initial load
+  // and any subsequent mutation).
+  useEffect(() => {
+    if (i18n.language !== currentLanguage) {
+      void i18n.changeLanguage(currentLanguage);
+    }
+  }, [currentLanguage, i18n]);
+
+  async function handleLanguageChange(language: AppLayoutLanguage) {
+    setCurrentLanguage(language);
+    await i18n.changeLanguage(language);
+    if (me.status === 'success' && me.data) {
+      try {
+        await setLanguage({ language });
+      } catch {
+        // The UI already reflects the new language; persistence failures are
+        // surfaced by the next me refetch.
+      }
+    }
+  }
 
   const navigation: AppLayoutNavigationItem[] = [
     { name: t('app.nav.dashboard'), href: '/app/dashboard' },
@@ -57,6 +104,16 @@ export default function AppLayoutRoute({ children }: { children: ReactNode }) {
 
   const titleKey = TITLE_BY_PATH[location.pathname] ?? 'app.title';
 
+  const languageSwitcher: AppLayoutLanguageSwitcher = {
+    current: currentLanguage,
+    onChange: handleLanguageChange,
+    ariaLabel: t('app.language.aria'),
+    options: {
+      en: t('app.language.options.en'),
+      es: t('app.language.options.es'),
+    },
+  };
+
   return (
     <AuthGuard>
       <AppLayout
@@ -65,9 +122,8 @@ export default function AppLayoutRoute({ children }: { children: ReactNode }) {
         user={user}
         title={t(titleKey)}
         logoAlt={t('app.brand')}
-      >
-        {children}
-      </AppLayout>
+        languageSwitcher={languageSwitcher}
+      />
     </AuthGuard>
   );
 }

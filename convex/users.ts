@@ -43,3 +43,16 @@ export const updateProfile = mutation({
     return null;
   },
 });
+
+export const setLanguage = mutation({
+  args: {
+    language: v.union(v.literal('en'), v.literal('es')),
+  },
+  returns: v.null(),
+  handler: async (ctx, { language }) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error('Not authenticated');
+    await ctx.db.patch(userId, { language });
+    return null;
+  },
+});

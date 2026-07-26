@@ -59,6 +59,13 @@
     "userFallback": {
       "name": "User",
       "email": "user@example.com"
+    },
+    "language": {
+      "aria": "Change language",
+      "options": {
+        "en": "English",
+        "es": "Spanish"
+      }
     }
   },
   "profile": {

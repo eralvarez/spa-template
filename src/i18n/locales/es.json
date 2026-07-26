@@ -59,6 +59,13 @@
     "userFallback": {
       "name": "Usuario",
       "email": "usuario@ejemplo.com"
+    },
+    "language": {
+      "aria": "Cambiar idioma",
+      "options": {
+        "en": "Inglés",
+        "es": "Español"
+      }
     }
   },
   "profile": {
