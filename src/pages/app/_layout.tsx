@@ -21,6 +21,7 @@ const TITLE_BY_PATH: Record<string, string> = {
   '/app/calendar': 'app.nav.calendar',
   '/app/reports': 'app.nav.reports',
   '/app/profile': 'profile.title',
+  '/app/settings': 'settings.title',
 };
 
 const SUPPORTED_LANGUAGES: ReadonlyArray<AppLayoutLanguage> = ['en', 'es'];

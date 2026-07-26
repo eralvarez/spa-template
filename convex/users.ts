@@ -1,6 +1,11 @@
-import { getAuthUserId } from '@convex-dev/auth/server';
+import {
+  getAuthUserId,
+  modifyAccountCredentials,
+  retrieveAccount,
+} from '@convex-dev/auth/server';
 import { v } from 'convex/values';
-import { mutation, query } from './_generated/server';
+import { action, mutation, query } from './_generated/server';
+import { api } from './_generated/api';
 
 export const getMe = query({
   args: {},
@@ -53,6 +58,36 @@ export const setLanguage = mutation({
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error('Not authenticated');
     await ctx.db.patch(userId, { language });
+    return null;
+  },
+});
+
+export const changePassword = action({
+  args: {
+    currentPassword: v.string(),
+    newPassword: v.string(),
+  },
+  returns: v.null(),
+  handler: async (ctx, { currentPassword, newPassword }) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error('Not authenticated');
+
+    const me = await ctx.runQuery(api.users.getMe, {});
+    const email = me?.email as string | undefined;
+    if (!email) throw new Error('No email on user');
+
+    // Verify the current password (throws `Error('InvalidSecret')` on mismatch).
+    await retrieveAccount(ctx, {
+      provider: 'password',
+      account: { id: email, secret: currentPassword },
+    });
+
+    // Set the new password.
+    await modifyAccountCredentials(ctx, {
+      provider: 'password',
+      account: { id: email, secret: newPassword },
+    });
+
     return null;
   },
 });

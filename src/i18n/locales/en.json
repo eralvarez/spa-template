@@ -86,5 +86,28 @@
       "invalidType": "Please choose an image file",
       "tooLarge": "Image must be under 5 MB"
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "changePassword": {
+      "title": "Change password",
+      "fields": {
+        "currentPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password"
+      },
+      "submit": "Change password",
+      "submitting": "Changing…",
+      "success": "Password changed successfully",
+      "errors": {
+        "currentPasswordRequired": "Current password is required",
+        "newPasswordRequired": "New password is required",
+        "newPasswordTooShort": "At least 8 characters",
+        "confirmPasswordRequired": "Please confirm your new password",
+        "passwordsDontMatch": "Passwords don't match",
+        "currentPasswordWrong": "Current password is incorrect",
+        "changeFailed": "Could not change password"
+      }
+    }
   }
 }

@@ -86,5 +86,28 @@
       "invalidType": "Elige un archivo de imagen",
       "tooLarge": "La imagen debe pesar menos de 5 MB"
     }
+  },
+  "settings": {
+    "title": "Configuración",
+    "changePassword": {
+      "title": "Cambiar contraseña",
+      "fields": {
+        "currentPassword": "Contraseña actual",
+        "newPassword": "Nueva contraseña",
+        "confirmPassword": "Confirma la nueva contraseña"
+      },
+      "submit": "Cambiar contraseña",
+      "submitting": "Cambiando…",
+      "success": "Contraseña cambiada correctamente",
+      "errors": {
+        "currentPasswordRequired": "La contraseña actual es obligatoria",
+        "newPasswordRequired": "La nueva contraseña es obligatoria",
+        "newPasswordTooShort": "Al menos 8 caracteres",
+        "confirmPasswordRequired": "Confirma tu nueva contraseña",
+        "passwordsDontMatch": "Las contraseñas no coinciden",
+        "currentPasswordWrong": "La contraseña actual es incorrecta",
+        "changeFailed": "No se pudo cambiar la contraseña"
+      }
+    }
   }
 }
