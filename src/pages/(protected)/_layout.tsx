@@ -76,16 +76,16 @@ export default function AppLayoutRoute() {
   }
 
   const navigation: AppLayoutNavigationItem[] = [
-    { name: t('app.nav.dashboard'), href: '/app/dashboard' },
-    { name: t('app.nav.team'), href: '/app/team' },
-    { name: t('app.nav.projects'), href: '/app/projects' },
-    { name: t('app.nav.calendar'), href: '/app/calendar' },
-    { name: t('app.nav.reports'), href: '/app/reports' },
+    { name: t('app.nav.dashboard'), href: '/' },
+    { name: t('app.nav.team'), href: '/team' },
+    { name: t('app.nav.projects'), href: '/projects' },
+    { name: t('app.nav.calendar'), href: '/calendar' },
+    { name: t('app.nav.reports'), href: '/reports' },
   ];
 
   const userNavigation: AppLayoutUserNavItem[] = [
-    { name: t('app.userNav.profile'), href: '/app/profile' },
-    { name: t('app.userNav.settings'), href: '/app/settings' },
+    { name: t('app.userNav.profile'), href: '/profile' },
+    { name: t('app.userNav.settings'), href: '/settings' },
     { name: t('app.userNav.signOut'), onClick: () => void signOut() },
   ];
 
