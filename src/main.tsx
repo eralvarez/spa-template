@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { Routes } from '@generouted/react-router';
+import { Routes } from '@generouted/react-router/lazy';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
